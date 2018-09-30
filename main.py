@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from flask import Flask, render_template, Response
-from camera import VideoCamera
 
 app = Flask(__name__)
 
@@ -11,7 +10,12 @@ def index():
 
 def gen():
     while True:
-        frame = camera.get_frame()
+        success, image = awscam.getlastframe()
+        # We are using Motion JPEG, but OpenCV defaults to capture raw images,
+        # so we must encode it into JPEG in order to correctly display the
+        # video stream.
+        ret, jpeg = cv2.imencode('.jpg', image)
+        frame = jpeg.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
