@@ -1,5 +1,5 @@
 import cv2
-# import awscam
+import awscam
 
 class VideoCamera(object):
     def __init__(self):
@@ -15,8 +15,8 @@ class VideoCamera(object):
         self.video.release()
     
     def get_frame(self):
-        success, image = self.video.read()
-        # success, image = awscam.getlastframe()
+        # success, image = self.video.read()
+        success, image = awscam.getlastframe()
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
         # so we must encode it into JPEG in order to correctly display the
         # video stream.
